@@ -1,7 +1,27 @@
  // Image manipulation logic from github.com/jwill/psychic-lana
+onmessage = function(e) {
+  console.log("step 2");
+  var a, b, g, i, j, imageData, length, pixel, r, ref, type;
+  type = e.data[0];
+  imageData = e.data[1];
 
+  length = imageData.data.length / 4;
+  for (i = j = 0; i <= length; i++){
+    r = imageData.data[i * 4 + 0];
+    g = imageData.data[i * 4 + 1];
+    b = imageData.data[i * 4 + 2];
+    a = imageData.data[i * 4 + 3];
+
+    pixel = manipulate(type, r, g, b, a);
+    imageData.data[i * 4 + 0] = pixel[0];
+    imageData.data[i * 4 + 1] = pixel[1];
+    imageData.data[i * 4 + 2] = pixel[2];
+    imageData.data[i * 4 + 3] = pixel[3];
+  }
+  console.log("part 3");
+  postMessage(imageData);
+};
 function manipulate(type, r, g, b, a) {
-  
   var func = function() {};
 
   function makePixelInverted(r, g, b, a) {
@@ -11,7 +31,7 @@ function manipulate(type, r, g, b, a) {
     return [r, g, b, a];
   };
 
-  function makePixelChroma(r, g, b, a) {
+  function makePixelChroma() {
     var max;
     max = Math.max(r, Math.max(g, b));
     if (max === g) {
